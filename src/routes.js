@@ -1,10 +1,14 @@
 const express = require("express");
 const CursoController = require("./controller/CursoController");
+const AuthController = require("./controller/AuthController");
 const { cursoSchema, cursoParams } = require("./schemas/cursoSchema");
 const { inscricaoEmail, inscricao } = require("./schemas/inscricaoValidate");
 const autenticated = require("./middlewares/authenticated");
+const { authSchema } = require("./schemas/authSchema");
 
 const routes = express.Router();
+
+routes.post("/login", [authSchema], AuthController.login);
 
 routes.get("/cursos", [autenticated], CursoController.index);
 
