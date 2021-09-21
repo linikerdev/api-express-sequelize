@@ -1,6 +1,7 @@
 const Curso = require("../database/models/Curso");
 const User = require("../database/models/User");
 const { inscricaoService } = require("../service/inscricao");
+const { generateHash } = require("../utils/helper");
 
 module.exports = {
   async index(req, res) {
@@ -43,13 +44,14 @@ module.exports = {
   },
   async createInscricao(req, res) {
     const { id } = req.params;
-    const { name, email, data_nascimento, password, user_id, status } = req.body;
+    const { name, email, data_nascimento, password, user_id, status } =
+      req.body;
 
     const user = await User.create({
       name,
       email,
       data_nascimento,
-      password: password || "12345",
+      password: await generateHash(password),
       user_type: user_id || 2,
       status: status || true,
     });
