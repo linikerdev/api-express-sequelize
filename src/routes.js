@@ -2,10 +2,12 @@ const express = require("express");
 const CursoController = require("./controller/CursoController");
 const { cursoSchema, cursoParams } = require("./schemas/cursoSchema");
 const { inscricaoEmail, inscricao } = require("./schemas/inscricaoValidate");
+const autenticated = require("./middlewares/authenticated");
 
 const routes = express.Router();
 
-routes.get("/cursos", CursoController.index);
+routes.get("/cursos", [autenticated], CursoController.index);
+
 routes.post("/cursos", [cursoSchema], CursoController.store);
 routes.get("/cursos/:id", [cursoParams], CursoController.show);
 

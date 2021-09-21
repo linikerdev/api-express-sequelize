@@ -1,2 +1,2 @@
 1 - instalar o bcrypt
-2 - criar arquivo de helper para 
+2 - criar arquivo de helper para criar hash
