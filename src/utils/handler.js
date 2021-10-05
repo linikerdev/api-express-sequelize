@@ -5,7 +5,6 @@ exports.validateDto = (checks) => {
     ...checks,
     (req, res, next) => {
       const errors = validationResult(req);
-
       if (!errors.isEmpty()) {
         return res.status(422).json({
           success: false,
@@ -15,4 +14,20 @@ exports.validateDto = (checks) => {
       next();
     },
   ];
+};
+
+exports.formatError = (err, res) => {
+  const {
+    statusCode = 500,
+    message = "Aconteceu um erro inesperado",
+    code = "ERROR",
+  } = err;
+
+  res
+  .status(statusCode)
+  .json({
+    statusCode,
+    message,
+    code,
+  });
 };

@@ -593,6 +593,11 @@ event-emitter@^0.3.5:
     d "1"
     es5-ext "~0.10.14"
 
+express-async-errors@^3.1.1:
+  version "3.1.1"
+  resolved "https://artefatos.jfrog.io/artifactory/api/npm/npm-group/express-async-errors/-/express-async-errors-3.1.1.tgz#6053236d61d21ddef4892d6bd1d736889fc9da41"
+  integrity sha1-YFMjbWHSHd70iS1r0dc2iJ/J2kE=
+
 express-validator@^6.12.1:
   version "6.12.1"
   resolved "https://registry.yarnpkg.com/express-validator/-/express-validator-6.12.1.tgz#2ff698ff6f9af436cb08913b5b26849e43f34031"

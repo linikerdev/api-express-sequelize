@@ -1,3 +1,4 @@
+const ErrorHandler = require("../config/ErrorHandler");
 const Curso = require("../database/models/Curso");
 const User = require("../database/models/User");
 const { inscricaoService } = require("../service/inscricao");
@@ -6,7 +7,6 @@ const { generateHash } = require("../utils/helper");
 module.exports = {
   async index(req, res) {
     const cursos = await Curso.findAll();
-
     return res.json(cursos);
   },
   async store(req, res) {

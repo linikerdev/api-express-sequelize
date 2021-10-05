@@ -1,5 +1,4 @@
 const { body } = require("express-validator");
-const { param } = require("../routes");
 const { validateDto } = require("../utils/handler");
 
 exports.inscricao = validateDto([

@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const ErrorHandler = require("../config/ErrorHandler");
 const { SECRET_KEY: secret_key } = process.env;
 console.log("secret_key", secret_key);
 
@@ -7,29 +8,24 @@ module.exports = (req, res, next) => {
   console.log("authHeader", authHeader);
 
   if (!authHeader) {
-    return res.status(401).json({ error: "No token provided" });
+    throw new ErrorHandler(401, "No token provided", "ERROR_AUTH");
   }
 
   const parts = authHeader.split(" ");
   if (parts.length !== 2) {
-    return res.status(401).json({ error: "Token error" });
+    throw new ErrorHandler(401, "Token error", "ERROR_AUTH");
   }
 
   const [schema, token] = parts;
-  console.log("########################");
-  console.log("token", token);
-  console.log("########################");
 
-  // if (!/Bearer$/i.test(scheme)) {
   if (schema.toLowerCase() !== "bearer") {
-    return res.status(401).json({ error: "Token malformatted" });
+    throw new ErrorHandler(401, "Token malformatted", "ERROR_AUTH");
   }
 
   jwt.verify(token, secret_key, (err, data) => {
     if (err) {
-      res.status(401).json({ error: "Token Invalid" });
+      throw new ErrorHandler(401, "Token Invalid", "ERROR_AUTH");
     }
-
     next();
   });
 };
