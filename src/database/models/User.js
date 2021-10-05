@@ -1,4 +1,5 @@
 const { Model, DataTypes } = require("sequelize");
+const { generateHash } = require("../../utils/helper");
 
 class User extends Model {
   static init(sequelize) {
@@ -12,9 +13,27 @@ class User extends Model {
         status: DataTypes.BOOLEAN,
       },
       {
-        tableName: "users", 
         sequelize,
-      
+        tableName: "users",
+        defaultScope: {
+          where: {
+            user_type: 2,
+          },
+          attributes: {
+            exclude: ["password", "user_type"],
+          },
+        },
+        hooks: {
+          beforeCreate: async (user) => {
+            if (user.password) {
+              user.password = await generateHash(user.password);
+              user.user_type = parseInt(user.user_type);
+            }
+          },
+          afterCreate: async (user) => {
+            user.password = null;
+          },
+        },
       }
     );
   }

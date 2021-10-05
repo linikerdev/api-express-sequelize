@@ -5,7 +5,12 @@ module.exports = {
   async login(req, res) {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({
+      attributes: {
+        include: ["password"],
+      },
+      where: { email },
+    });
     if (!user) {
       return res
         .status(400)
@@ -30,8 +35,14 @@ module.exports = {
     const token = generateToken(payloadToken);
 
     return res.json({
-    //   user: payloadToken,
+      //   user: payloadToken,
       ...token,
     });
+  },
+
+  async register(req, res) {
+    const bodyPayload = req.body;
+    const user = await User.create(bodyPayload);
+    res.json(user);
   },
 };
