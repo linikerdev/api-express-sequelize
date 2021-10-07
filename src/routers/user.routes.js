@@ -1,6 +1,6 @@
-// const autenticated = require("../middlewares/authenticated");
+const autenticated = require("../middlewares/authenticated");
 const UserController = require("../controller/UserController");
 
 module.exports = (route) => {
-  route.get("/user", [], UserController.index);
+  route.get("/user", [autenticated], UserController.index);
 };

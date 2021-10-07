@@ -16,9 +16,7 @@ class User extends Model {
         sequelize,
         tableName: "users",
         defaultScope: {
-          where: {
-            user_type: 2,
-          },
+          where: {},
           attributes: {
             exclude: ["password", "user_type"],
           },

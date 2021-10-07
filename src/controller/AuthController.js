@@ -1,28 +1,29 @@
 const User = require("../database/models/User");
 const bcrypt = require("bcrypt");
 const { generateToken } = require("../utils/helper");
+const ErrorHandler = require("../config/ErrorHandler");
+
 module.exports = {
   async login(req, res) {
     const { email, password } = req.body;
 
     const user = await User.findOne({
       attributes: {
-        include: ["password"],
+        include: ["password", "user_type"],
       },
-      where: { email },
+      where: { email: email },
     });
+
     if (!user) {
-      return res
-        .status(400)
-        .json({ error: "Usuário não existe na base de dados" });
+      throw new ErrorHandler(400, "Usuário não existe na base de dados");
     }
 
     if (!(await bcrypt.compare(password, user.password))) {
-      return res.status(400).json({ error: "Senha inválida" });
+      throw new ErrorHandler(400, "Senha inválida");
     }
 
     if (!user.status) {
-      return res.status(400).json({ error: "O Usuário está inválido" });
+      throw new ErrorHandler(400, "O Usuário está desativado");
     }
 
     const payloadToken = {

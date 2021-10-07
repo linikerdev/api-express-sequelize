@@ -2,12 +2,19 @@ const { body } = require("express-validator");
 const { validateDto } = require("../utils/handler");
 
 const auth = [
-  body("email").notEmpty().isEmail().withMessage("Email é item obrigatório"),
-  body("password")
+  body("email")
     .notEmpty()
+    .withMessage("O campo e-mail não pode ser vazio")
+    .isEmail()
+    .withMessage("O campo e-mail deve passar o tipo email"),
+
+  body("password", "senha com erro")
+    .notEmpty()
+    .withMessage("A senha não pode ser vazia")
     .isString()
+    .withMessage("A senha deve ser do tipo Alfanumerico")
     .isLength({ min: 5 })
-    .withMessage("Senha é item obrigatório"),
+    .withMessage("A senha deve conter no minimo 5 caracteres"),
 ];
 
 const register = [

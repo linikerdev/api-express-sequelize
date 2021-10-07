@@ -1,17 +1,17 @@
 const { validationResult } = require("express-validator");
+const ErrorHandler = require("../config/ErrorHandler");
 
 exports.validateDto = (checks) => {
   return [
     ...checks,
     (req, res, next) => {
       const errors = validationResult(req);
+
       if (!errors.isEmpty()) {
-        return res.status(422).json({
-          success: false,
-          errors: errors.array(),
-        });
+        throw new ErrorHandler(422, errors.array(), "ERROR_VALIDATE");
+      } else {
+        next();
       }
-      next();
     },
   ];
 };
@@ -23,9 +23,7 @@ exports.formatError = (err, res) => {
     code = "ERROR",
   } = err;
 
-  res
-  .status(statusCode)
-  .json({
+  res.status(statusCode).json({
     statusCode,
     message,
     code,
