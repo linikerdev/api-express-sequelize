@@ -1,5 +1,6 @@
 const { Model, DataTypes } = require("sequelize");
 const { generateHash } = require("../../utils/helper");
+const ErrorHandler = require("../../config/ErrorHandler.js");
 
 class User extends Model {
   static init(sequelize) {
@@ -26,6 +27,12 @@ class User extends Model {
             if (user.password) {
               user.password = await generateHash(user.password);
               user.user_type = parseInt(user.user_type);
+            }
+            if (await this.findOne({ where: { email: user.email } })) {
+              throw new ErrorHandler(
+                409,
+                "Ja existe um e-mail cadastrado no banco"
+              );
             }
           },
           afterCreate: async (user) => {

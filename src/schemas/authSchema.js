@@ -19,11 +19,16 @@ const auth = [
 
 const register = [
   ...auth,
-  body("name").notEmpty().isString().withMessage("O nome é obrigatório"),
+  body("name")
+    .notEmpty()
+    .withMessage("O nome é obrigatório")
+    .isString()
+    .withMessage("O nome tem que ser um texto"),
   body("data_nascimento")
     .notEmpty()
+    .withMessage("A data de nascimento é obrigatória")
     .isDate()
-    .withMessage("A data de nascimento é obrigatória"),
+    .withMessage("Passe uma data de nascimento valida"),
   body("user_type")
     .default(2)
     .isNumeric()
