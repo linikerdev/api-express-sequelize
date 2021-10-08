@@ -42,6 +42,22 @@ module.exports = {
     }
     return res.json(curso);
   },
+  async destroy(req, res) {
+    const { id } = req.params;
+    const curso = await Curso.findByPk(id);
+    if (!curso) {
+      res
+        .status(400)
+        .json({ error: `Não existe na base um curso com id ${id}` });
+    }
+
+    if (await curso.destroy()) {
+      return res.status(200).json({
+        data: "curso deletado com sucesso",
+      });
+    }
+  },
+
   async createInscricao(req, res) {
     const { id } = req.params;
     const { name, email, data_nascimento, password, user_id, status } =

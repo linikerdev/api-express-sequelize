@@ -8,6 +8,11 @@ module.exports = (route) => {
 
   route.post("/cursos", [cursoSchema], CursoController.store);
   route.get("/cursos/:id", [cursoParams], CursoController.show);
+  route.delete(
+    "/cursos/:id",
+    [cursoParams, autenticated],
+    CursoController.destroy
+  );
 
   route.post(
     "/cursos/:id/inscricao/",
