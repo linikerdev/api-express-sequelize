@@ -1,0 +1,69 @@
+1 - AUTH - login
+    * se não passar os dados no body deve emitir erro (ok)
+    * se somente passar o tipo diferente de email (ok)
+    * se somente passar email, deve emitir erro (ok)
+    * se passar a senha errada, deve emitir erro (ok)
+    * se passar os dados corretos, deve retornar um token(ok)
+1 - AUTH - register
+    * se não passar body, deve retornar um erro (ok)
+    * se não passar os dados no formato adequado, deve retornar um erro (ok)
+    * se existir o e-mail na base, deve apresentar um erro de conflito (ok)
+    * se passar os dados corretos, deve retornar um objeto com os dados do cadastro(ok)
+    * se passar o user_type, deve forçar do cadastro com user 2 (*)
+_____________________________________________________________________________________________________________
+
+2 - CURSOS - read
+    * se a request não estiver autenticada, deve exibir um erro  (ok)
+    * se vai retornar a lista de cursos(ok)
+
+2 - CURSOS - create
+    * se a request não estiver autenticada, deve exibir um erro  (ok)
+    * se a request não está autenticado como administrador, deve exibir um erro informando(ok)
+    * se não passar os dados no formato adequado, deve retornar um erro (ok)
+
+2 - CURSOS - read by Id
+    * se a request não estiver autenticada, deve exibir um erro  (ok)
+    * se a request não está autenticado como administrador, deve exibir um erro informando(ok)
+    * se não passar o parâmetro e não estiver no formado numerico, deve retornar um erro
+    * se passar os dados corretos, deve retornar um objeto com os dados do curso passado pelo id(ok)
+
+2 - CURSOS - delete
+   * se a request não estiver autenticada, deve exibir um erro  (ok)
+   * se a request não está autenticado como administrador, deve exibir um erro informando(ok)
+   * se não passar o parâmetro e não estiver no formado numerico, deve retornar um erro
+   * se passar os dados corretos, deve retornar deletar o curso passado pelo id(ok)
+
+2 - CURSOS - update                                                                                                                                                                                             
+   * se a request não estiver autenticada, deve exibir um erro  (ok)
+   * se a request não está autenticado como administrador, deve exibir um erro informando(ok)
+   * se não passar o parâmetro e não estiver no formado numerico, deve retornar um erro
+   * se passar os dados corretos, deve retornar um objeto com os dados do curso atualizado(ok)
+_____________________________________________________________________________________________________________
+
+3 - USER - read     (somente autenticado com admin)
+   * se a request não estiver autenticada, deve exibir um erro  (ok)
+   * se a request não está autenticado como administrador, deve exibir um erro informando(ok)
+   * se vai retornar a lista de usuarios(ok)
+
+3 - USER - read by Id
+   * se a request não estiver autenticada, deve exibir um erro  (ok)
+   * se a request não está autenticado como administrador, deve exibir um erro informando(ok)
+   * se não passar o parâmetro e não estiver no formado numerico, deve retornar um erro
+   * se passar os dados corretos, deve retornar um objeto com os dados do usuario passado pelo id(ok)
+
+3 - USER - create   (somente autenticado com admin)
+   * se a request não estiver autenticada, deve exibir um erro  (ok)
+   * se a request não está autenticado como administrador, deve exibir um erro informando(ok)
+   * se não passar os dados no formato adequado, deve retornar um erro (ok)
+
+3 - USER - update   (somente autenticado com admin)
+   * se a request não estiver autenticada, deve exibir um erro  (ok)
+   * se a request não está autenticado como administrador, deve exibir um erro informando(ok)
+   * se não passar o parâmetro e não estiver no formado numerico, deve retornar um erro
+   * se passar os dados corretos, deve retornar um objeto com os dados do usuario atualizado(ok)
+
+3 - USER - delete   (somente autenticado com admin)
+   * se a request não estiver autenticada, deve exibir um erro  (ok)  
+   * se a request não está autenticado como administrador, deve exibir um erro informando(ok)
+   * se não passar o parâmetro e não estiver no formado numerico, deve retornar um erro
+   * se passar os dados corretos, deve retornar deletar o usuario passado pelo id(ok)

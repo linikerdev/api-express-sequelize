@@ -11,13 +11,8 @@ module.exports = {
   },
   async store(req, res) {
     const data = req.body;
-
-    try {
-      const create = await Curso.create(data);
-      return res.json(create);
-    } catch (error) {
-      console.log(error);
-    }
+    const create = await Curso.create(data);
+    return res.json(create);
   },
   async show(req, res) {
     const { id } = req.params;
@@ -26,11 +21,12 @@ module.exports = {
       include: [
         {
           association: "alunos",
-          attributes: ["id", "name", "email"],
+          attributes: ["name", "email"],
           order: [["name", "desc"]],
           through: {
             attributes: [],
           },
+          required: false //  caso não tenha nenhuma inscrição, ira retornar vazio
         },
       ],
     });
@@ -56,6 +52,20 @@ module.exports = {
         data: "curso deletado com sucesso",
       });
     }
+  },
+
+  async update(req, res) {
+    const { id } = req.params;
+    const data = req.body;
+    const curso = await Curso.findByPk(id);
+    if (!curso) {
+      res
+        .status(400)
+        .json({ error: `Não existe na base um curso com id ${id}` });
+    }
+
+    const update = await curso.update(data);
+    return res.json(update);
   },
 
   async createInscricao(req, res) {

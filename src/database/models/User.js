@@ -36,7 +36,7 @@ class User extends Model {
             }
           },
           afterCreate: async (user) => {
-            user.password = null;
+            delete user.dataValues.password
           },
         },
       }

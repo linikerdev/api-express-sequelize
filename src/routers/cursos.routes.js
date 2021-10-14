@@ -2,16 +2,26 @@ const CursoController = require("../controller/CursoController");
 const { cursoSchema, cursoParams } = require("../schemas/cursoSchema");
 const { inscricaoEmail, inscricao } = require("../schemas/inscricaoValidate");
 const autenticated = require("../middlewares/authenticated");
+const onlyAdmin = require("../middlewares/onlyAdmin");
 
 module.exports = (route) => {
-  route.get("/cursos", [autenticated], CursoController.index);
+  // index
+  route.get("/cursos", [autenticated], CursoController.index); //***
 
-  route.post("/cursos", [cursoSchema], CursoController.store);
-  route.get("/cursos/:id", [cursoParams], CursoController.show);
+  route.post("/cursos", [onlyAdmin, cursoSchema], CursoController.store);
+
+  route.get("/cursos/:id", [onlyAdmin, cursoParams], CursoController.show);
+
   route.delete(
     "/cursos/:id",
-    [cursoParams, autenticated],
+    [onlyAdmin, cursoParams],
     CursoController.destroy
+  );
+
+  route.put(
+    "/cursos/:id",
+    [onlyAdmin, cursoParams, cursoSchema],
+    CursoController.update
   );
 
   route.post(

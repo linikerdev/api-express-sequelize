@@ -2,6 +2,7 @@ const User = require("../database/models/User");
 const bcrypt = require("bcrypt");
 const { generateToken } = require("../utils/helper");
 const ErrorHandler = require("../config/ErrorHandler");
+const { response } = require("express");
 
 module.exports = {
   async login(req, res) {
@@ -43,7 +44,18 @@ module.exports = {
 
   async register(req, res) {
     const bodyPayload = req.body;
+    bodyPayload.user_type = 2;
+    bodyPayload.status = true;
     const user = await User.create(bodyPayload);
-    res.json(user);
+    const token = generateToken(user);
+
+    const response = {
+      user,
+    };
+    if (user.status) {
+      response.token = token;
+    }
+
+    res.json(response);
   },
 };
