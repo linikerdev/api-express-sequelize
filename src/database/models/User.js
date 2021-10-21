@@ -19,7 +19,7 @@ class User extends Model {
         defaultScope: {
           where: {},
           attributes: {
-            exclude: ["password", "user_type"],
+            exclude: ["password"],
           },
         },
         hooks: {
@@ -36,7 +36,7 @@ class User extends Model {
             }
           },
           afterCreate: async (user) => {
-            delete user.dataValues.password
+            delete user.dataValues.password;
           },
         },
       }

@@ -3,10 +3,24 @@ const Curso = require("../database/models/Curso");
 const User = require("../database/models/User");
 const { inscricaoService } = require("../service/inscricao");
 const { generateHash } = require("../utils/helper");
+const jwt = require("jsonwebtoken");
+const Inscricao = require("../database/models/Inscricao");
 
 module.exports = {
   async index(req, res) {
-    const cursos = await Curso.findAll();
+    const cursos = await Curso.findAll({
+      include: [
+        {
+          association: "alunos",
+          attributes: ["name", "email"],
+          order: [["name", "desc"]],
+          through: {
+            attributes: [],
+          },
+          required: false, //  caso não tenha nenhuma inscrição, ira retornar vazio
+        },
+      ],
+    });
     return res.json(cursos);
   },
   async store(req, res) {
@@ -26,25 +40,22 @@ module.exports = {
           through: {
             attributes: [],
           },
-          required: false //  caso não tenha nenhuma inscrição, ira retornar vazio
+          required: false, //  caso não tenha nenhuma inscrição, ira retornar vazio
         },
       ],
     });
 
     if (!curso) {
-      res
-        .status(400)
-        .json({ error: `Não existe na base um curso com id ${id}` });
+      throw new ErrorHandler(400, `Não existe na base um curso com id ${id}`);
     }
     return res.json(curso);
   },
   async destroy(req, res) {
     const { id } = req.params;
     const curso = await Curso.findByPk(id);
+
     if (!curso) {
-      res
-        .status(400)
-        .json({ error: `Não existe na base um curso com id ${id}` });
+      throw new ErrorHandler(400, `Não existe na base um curso com id ${id}`);
     }
 
     if (await curso.destroy()) {
@@ -59,9 +70,7 @@ module.exports = {
     const data = req.body;
     const curso = await Curso.findByPk(id);
     if (!curso) {
-      res
-        .status(400)
-        .json({ error: `Não existe na base um curso com id ${id}` });
+      throw new ErrorHandler(400, `Não existe na base um curso com id ${id}`);
     }
 
     const update = await curso.update(data);
@@ -70,50 +79,38 @@ module.exports = {
 
   async createInscricao(req, res) {
     const { id } = req.params;
-    const { name, email, data_nascimento, password, user_id, status } =
-      req.body;
+    const { authorization } = req.headers;
+    const token = authorization.split(" ")[1];
+    const dataToken = jwt.decode(token);
 
-    const user = await User.create({
-      name,
-      email,
-      data_nascimento,
-      password: await generateHash(password),
-      user_type: user_id || 2,
-      status: status || true,
-    });
-
-    inscricaoService(user.id, id)
+    inscricaoService(dataToken.id, id)
       .then(() => res.status(200).json("Inscricao feita com sucesso"))
-      .catch(() => res.status(400).json("Erro ao processar inscricao"));
-  },
-  async createInscricaoEmail(req, res) {
-    const { id } = req.params;
-    const { email } = req.body;
-
-    const emailValid = await User.findOne({
-      where: { email: email, user_type: 2 },
-    });
-
-    if (!emailValid) {
-      res.status(422).json({ error: "O email não existe no sistema" });
-    }
-    inscricaoService(emailValid.id, id)
-      .then(() => res.status(200).json("Inscricao feita com sucesso"))
-      .catch(() => res.status(400).json("Erro ao processar inscricao"));
+      .catch((err) => {
+        const errorResponse = err.errors.map((item) => item.path);
+        res.status(400).json(`As tabelas ${errorResponse} devem ser unicas`);
+      });
   },
 
   async deleteInscricao(req, res) {
-    const params = req.params;
+    const { id } = req.params;
+    const { authorization } = req.headers;
+    const token = authorization.split(" ")[1];
+    const dataToken = jwt.decode(token);
 
     const incricao = await Inscricao.findOne({
       where: {
-        user_id: parseInt(params.user_id),
-        curso_id: parseInt(params.id),
+        user_id: dataToken.id,
+        curso_id: parseInt(id),
       },
     });
+    if (!incricao) {
+      throw new ErrorHandler(400, `Não existe a inscricao`);
 
-    incricao.destroy();
+    }
 
-    res.json("Inscrição destruida com sucersso");
+
+    if (incricao.destroy()) {
+      res.json("Inscrição destruida com sucesso");
+    }
   },
 };
