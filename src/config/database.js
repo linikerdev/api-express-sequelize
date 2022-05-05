@@ -1,4 +1,3 @@
-// POSTGRES SQL
 require("dotenv").config();
 const { DB_DIALECT, DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE } =
   process.env;
@@ -16,4 +15,3 @@ module.exports = {
   },
   production: {},
 };
-
