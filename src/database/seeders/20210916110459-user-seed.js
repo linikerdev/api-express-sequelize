@@ -7,7 +7,7 @@ module.exports = {
     const dataArray = [
       {
         name: "Liniquer Silva",
-        email: "professor@infnet.edu.br",
+        email: "contato@liniker.com.br",
         password: await generateHash("12345"),
         user_type: 1,
         status: true,
@@ -16,8 +16,18 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        name: "Jose Maria Aluno",
-        email: "aluno@infnet.edu.br",
+        name: "Magno",
+        email: "magnomws@gmail.com",
+        password: await generateHash("12345"),
+        user_type: 1,
+        status: true,
+        data_nascimento: new Date(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: "Fulano",
+        email: "fulano@gmail.com",
         password: await generateHash("12345"),
         user_type: 2,
         status: true,
