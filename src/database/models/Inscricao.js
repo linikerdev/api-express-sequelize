@@ -10,8 +10,8 @@ class Inscricao extends Model {
       {
         tableName: "curso_inscricao",
         sequelize,
-        createdAt: false,
-        updatedAt: false,
+        created_at: false,
+        updated_at: false,
       }
     );
   }

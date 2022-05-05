@@ -12,8 +12,8 @@ module.exports = {
         user_type: 1,
         status: true,
         data_nascimento: new Date(),
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        created_at: new Date(),
+        updated_at: new Date(),
       },
       {
         name: "Magno",
@@ -22,8 +22,8 @@ module.exports = {
         user_type: 1,
         status: true,
         data_nascimento: new Date(),
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        created_at: new Date(),
+        updated_at: new Date(),
       },
       {
         name: "Fulano",
@@ -32,8 +32,8 @@ module.exports = {
         user_type: 2,
         status: true,
         data_nascimento: new Date(),
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        created_at: new Date(),
+        updated_at: new Date(),
       },
     ];
 
